@@ -1,0 +1,21 @@
+{
+  "name": "ddaproduction/evocms-commerce-coupons",
+  "description": "Coupons module for commerce",
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "ext-json": "*"
+  },
+
+  "autoload": {
+    "psr-4": {
+      "EvolutionCMS\\EvocmsCommerceCoupons\\": "src"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "EvolutionCMS\\EvocmsCommerceCoupons\\EvocmsCommerceCouponsServiceProvider"
+      ]
+    }
+  }
+}
