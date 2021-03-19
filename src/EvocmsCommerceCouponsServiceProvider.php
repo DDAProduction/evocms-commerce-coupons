@@ -35,7 +35,7 @@ class EvocmsCommerceCouponsServiceProvider extends ServiceProvider
             dirname(__DIR__).'/assets/modules/module.php'
         );
 
-        $this->publishes([__DIR__ . '/../public' => public_path('assets/modules/evocms-commerce-coupons/')]);
+        $this->publishes([__DIR__ . '/../public' => public_path('assets/modules/evocms-commerce-coupons/public/')]);
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
 
