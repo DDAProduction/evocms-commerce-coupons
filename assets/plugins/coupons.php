@@ -23,7 +23,7 @@ Event::listen(['evolution.OnCollectSubtotals'],function ($params){
 
 
         $params['total'] -= $discount;
-        $params['rows']['discount'] = [
+        $params['rows']['coupons'] = [
             'title' => \Lang::get('CommerceCoupons::main.subtotal_title',['coupon'=>$coupon['coupon']]),
             'price' => $discount,
         ];
