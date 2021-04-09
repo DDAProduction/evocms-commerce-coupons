@@ -27,7 +27,7 @@ class FrontController
 
         /** @var CommerceCoupon $coupon */
         $coupon = CommerceCoupon::select(['commerce_coupons.*'])
-            ->selectRaw('count('.\DB::getTablePrefix().'commerce_coupon_orders.order_id) as used')
+            ->selectRaw('count('.\DB::getTablePrefix().'commerce_coupon_orders.id) as used')
             ->where('coupon', $coupon)
             ->leftJoin('commerce_coupon_orders', 'commerce_coupons.id', '=', 'commerce_coupon_orders.coupon_id')
             ->where('active',1)
