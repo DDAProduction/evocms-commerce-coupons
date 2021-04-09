@@ -51,7 +51,7 @@ class ModuleController
             },
         ])
             ->select(['commerce_coupons.*'])
-            ->selectRaw('count('.\DB::getTablePrefix().'commerce_coupon_orders.order_id) as used')
+            ->selectRaw('count('.\DB::getTablePrefix().'commerce_coupon_orders.id) as used')
         ;
 
         if($request->has('sort')){
