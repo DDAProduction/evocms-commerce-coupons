@@ -31,12 +31,11 @@ Event::listen(['evolution.OnCollectSubtotals'],function ($params){
     }
 });
 
-Event::listen(['evolution.OnOrderProcessed'],function ($params){
-    if(isset($_SESSION['CommerceCoupon'])){
-
+Event::listen(['evolution.OnOrderSaved'],function ($params){
+    if(evo()->isFrontend() && isset($_SESSION['CommerceCoupon'])){
 
         $couponOrder = \EvolutionCMS\EvocmsCommerceCoupons\Models\CommerceCouponOrder::find($_SESSION['CommerceCoupon']['couponOrderId']);
-        $couponOrder->order_id = $params['order']['id'];
+        $couponOrder->order_id = $params['order_id'];
         $couponOrder->save();
 
         unset($_SESSION['CommerceCoupon']);
