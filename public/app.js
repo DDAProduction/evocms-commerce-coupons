@@ -654,7 +654,7 @@ webix.ui({
 
             pager:{
                 template:'{common.first()} {common.pages()}  {common.last()}',
-
+                container: 'pager',
                 group:6,
                 size:10,
             },
