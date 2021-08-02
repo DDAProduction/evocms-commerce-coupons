@@ -3,7 +3,7 @@
 return [
     'caption'=>'Купоны',
 
-    'close_without_save'=>'Закрыть без сохранение',
+    'close_without_save'=>'Закрыть без сохранения',
     'close'=>'Закрыть',
     'add'=>'Добавить',
     'save'=>'Сохранить',
@@ -32,7 +32,7 @@ return [
     'discount_type_percent'=>'Процент',
 
 
-    'rule_period_from_cation'=>'Период из',
+    'rule_period_from_cation'=>'Период с',
     'rule_period_to_cation'=>'Период по',
 
 
@@ -55,13 +55,13 @@ return [
     'col_limit'=>'Лимит',
     'col_used'=>'Использовано',
     'col_rules'=>'Условия',
-    'col_discount_value'=>'Значенме скидки',
+    'col_discount_value'=>'Значение скидки',
     'col_discount_type'=>'Тип скидки',
     'col_active'=>'Активный',
 
     'error_empty'=>'Купон не найден',
     'error_no_valid'=>'Купон нельзя использовать',
-    'error_limit'=>'Использовано максинальное количество раз',
+    'error_limit'=>'Использовано максимальное количество раз',
 
     'subtotal_title'=>'Скидка по купону :coupon',
 
