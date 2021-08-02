@@ -1,4 +1,5 @@
-$(document).on('click','[data-commerce-coupon-add]',function () {
+$(document).on('click','[data-commerce-coupon-add]',function (e) {
+    e.preventDefault();
 
     let $errors = $('[data-commerce-coupon-errors]');
 
