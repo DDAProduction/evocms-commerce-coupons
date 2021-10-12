@@ -17,6 +17,7 @@ class AddCouponsTable extends Migration
             $table->id();
             $table->string('title', 100)->nullable();
             $table->string('coupon', 50)->nullable();
+            $table->unique('coupon');
             $table->float('discount_value')->nullable();
             $table->string('discount_type', 20)->nullable();
             $table->integer('limit')->nullable();
