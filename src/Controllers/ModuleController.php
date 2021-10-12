@@ -51,10 +51,9 @@ class ModuleController
             },
         ])
             ->select(['commerce_coupons.*'])
-            ->selectRaw('count('.\DB::getTablePrefix().'commerce_coupon_orders.id) as used')
-        ;
+            ->selectRaw('count(' . \DB::getTablePrefix() . 'commerce_coupon_orders.id) as used');
 
-        if($request->has('sort')){
+        if ($request->has('sort')) {
             $sort = $request->get('sort');
             $sortBy = key($sort);
             $sortOrder = $sort[$sortBy];
@@ -62,33 +61,31 @@ class ModuleController
             $sortBy = $this->prepareFieldName($sortBy);
 
             $query->orderBy($sortBy, $sortOrder);
-        }
-        else{
+        } else {
             $query->orderBy('commerce_coupons.id', 'desc');
         }
 
-        if($request->has('filter')){
+        if ($request->has('filter')) {
 
             $filters = $request->get('filter');
 
             foreach ($filters as $field => $filterValue) {
-                if(empty($filterValue)){
+                if (empty($filterValue)) {
                     continue;
                 }
 
                 $field = $this->prepareFieldName($field);
 
-                $query->where($field,'like','%'.$filterValue.'%');
+                $query->where($field, 'like', '%' . $filterValue . '%');
             }
 
         }
 
 
-
         $total = $query->count();
 
         $query->groupBy('commerce_coupons.id');
-        $query->leftJoin('commerce_coupon_orders','commerce_coupons.id','=','commerce_coupon_orders.coupon_id');
+        $query->leftJoin('commerce_coupon_orders', 'commerce_coupons.id', '=', 'commerce_coupon_orders.coupon_id');
 
         $discounts = $query->limit($count)->offset($start)->get();
 
@@ -98,7 +95,6 @@ class ModuleController
             "pos" => $start,
             "data" => []
         ];
-
 
 
         /** @var CommerceCoupon[] $discounts */
@@ -136,18 +132,20 @@ class ModuleController
         return $result;
     }
 
-    public function add(){
-        $coupon  = CommerceCoupon::create();
+    public function add()
+    {
+        $coupon = CommerceCoupon::create();
 
         return [
-            'status'=>true,
-            'newid'=>$coupon->id
+            'status' => true,
+            'newid' => $coupon->id
         ];
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $request = $request->toArray();
-        $request['rules'] = json_decode($request['rules'],true);
+        $request['rules'] = json_decode($request['rules'], true);
 
         $coupon = CommerceCoupon::findOrFail($request['id']);
 
@@ -164,29 +162,31 @@ class ModuleController
         foreach ($this->rulesLoader->loadRules() as $rule) {
             $data = $rule->getModuleController()->saveRule($data, $request['rules']);
         }
-
+        $old_data = $coupon->toArray();
+        $old_data['created_at'] = date('d-m-Y H:i:s', strtotime($old_data['created_at']));
         unset($data['id']);
         $coupon->fill($data);
-        $coupon->save();
+        try {
+            $coupon->save();
+            return [
+                'status' => true
+            ];
 
-        return [
-            'status'=>true
-        ];
+        } catch (\Exception $e) {
+            return ['error' => $e->getMessage(), 'old_data' => $old_data];
+        }
     }
 
-    public function remove(Request $request){
+    public function remove(Request $request)
+    {
         CommerceCoupon::findOrFail($request->post('id'))->delete();
     }
 
     public function generate(Request $request)
     {
         $request = $request->toArray();
-
         for ($i = 0; $i < intval($request['coupons_count']); $i++) {
-
             $coupon = $this->generateCode($request['symbol_counts']);
-
-
             $data = [
                 'title' => $request['title'],
                 'coupon' => $coupon,
@@ -203,16 +203,16 @@ class ModuleController
                 $data = $rule->getModuleController()->saveRule($data, $request['rules']);
             }
 
-
             unset($data['id']);
             $coupon->fill($data);
-
-            $coupon->save();
-
+            try {
+                $coupon->save();
+            } catch (\Exception $e) {
+                $i--;
+            }
         }
-
         return [
-            'status'=>true
+            'status' => true
         ];
     }
 
@@ -250,8 +250,8 @@ class ModuleController
 
     private function prepareFieldName($sortBy)
     {
-        if(in_array($sortBy,['id','created_at'])){
-            $sortBy  = 'commerce_coupons.'.$sortBy;
+        if (in_array($sortBy, ['id', 'created_at'])) {
+            $sortBy = 'commerce_coupons.' . $sortBy;
         }
         return $sortBy;
     }

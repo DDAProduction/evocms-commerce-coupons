@@ -647,7 +647,21 @@ webix.ui({
             url: appConfig.moduleUrl+"action=coupons-load",
             save:{
                 insert: appConfig.moduleUrl+"action=coupons-add",
-                update: appConfig.moduleUrl+"action=coupons-update",
+                update: function(id, operation, update){
+                    return webix.ajax().post(
+                        appConfig.moduleUrl+"action=coupons-update",
+                        update
+                    ).then( (response)=>{
+                        if(response.json().error){
+                            webix.alert({
+                                title: "Data was not saved!",
+                                text: response.json().error,
+                                type:"alert-error"
+                            });
+                            this.updateItem(id, response.json().old_data);
+                        }
+                    });
+                },
                 delete: appConfig.moduleUrl+"action=coupons-remove",
             },
 
